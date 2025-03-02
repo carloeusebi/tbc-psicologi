@@ -31,9 +31,9 @@ export interface SharedData extends PageProps {
         routes: Record<string, string>;
     };
     flash: {
-        success: string;
-        error: string;
-        info: string;
+        success: string | null;
+        error: string | null;
+        info: string | null;
     };
 }
 
@@ -71,6 +71,8 @@ export interface Patient {
     archived_at: string | null;
     created_at: string;
     updated_at: string;
+
+    evaluations_count?: number;
 }
 
 export type BreadcrumbItemType = BreadcrumbItem;

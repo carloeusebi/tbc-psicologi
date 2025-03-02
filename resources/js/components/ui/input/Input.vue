@@ -5,7 +5,7 @@ import type { HTMLAttributes } from 'vue';
 
 const props = defineProps<{
     defaultValue?: string | number;
-    modelValue?: string | number;
+    modelValue?: string | number | null;
     class?: HTMLAttributes['class'];
 }>();
 
@@ -13,9 +13,18 @@ const emits = defineEmits<{
     (e: 'update:modelValue', payload: string | number): void;
 }>();
 
-const modelValue = useVModel(props, 'modelValue', emits, {
-    passive: true,
-    defaultValue: props.defaultValue,
+const [modelValue, modelModifiers] = defineModel<string, 'trim' | 'uppercase' | 'ucfirst'>({
+    set(value) {
+        if (modelModifiers.uppercase) {
+            return value.toUpperCase();
+        }
+
+        if (modelModifiers.ucfirst) {
+            return value.replace(/\b\w/g, (char) => char.toUpperCase());
+        }
+
+        return value;
+    }
 });
 </script>
 
